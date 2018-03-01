@@ -80,12 +80,6 @@ class ModelZoo extends React.Component {
       this.setState({open:1-this.state.open});
   }
 
-  handlerSearch(){
-    let bar = React.findDOMNode(this.refs.searchBar);
-    let word = bar.value;
-    this.props.searchInvItem(word);
-  }
-
   render() {
     const startIndex = 0;
     var category = this.state.Recognition;
@@ -160,7 +154,7 @@ class ModelZoo extends React.Component {
         <div className="centered-zoo-modal">
           <div className="zoo-modal-model">
             <h2 className="zoo-modal-text">Load From Zoo</h2>
-            <input className="import-textbox-input" ref='searchBar' onChange={this.handlerSearch.bind(this)} type="text" placeholder="Search..." />
+            <input className="import-textbox-input" type="text" placeholder="Search..." />
           </div>
           <div className="zoo-modal-model">
             <h3 className="zoo-modal-text">Recognition</h3>
