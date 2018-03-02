@@ -9,7 +9,13 @@ class ModelZoo extends React.Component {
       this.state = {
         open:0,
         text:"Load More",
-        searchResult:[["keras","v3","Inception V3"]],
+        searchResult:[
+                      ["keras","v3","Frequently-used: Inception V3"],
+                      ["caffe","GoogleNet","Frequently-used: GoogLeNet"],
+                      ["caffe","alexnet","Frequently-used: AlexNet"],
+                      ["caffe","yolo_net","Frequently-used: YOLONet"],
+                      ["keras","textGeneration","Frequently-used: Text Generation"]
+                     ],
         Recognition:{ 
                       toDisplay:6,
                       models:[
@@ -104,55 +110,61 @@ class ModelZoo extends React.Component {
     var result = [];
 
     if(word ==""){
-      result.push(["caffe","CoCo_Caption","CoCo Caption"]);
+      result.push(["keras","v3","Frequently-used: Inception V3"]);
+      result.push(["caffe","GoogleNet","Frequently-used: GoogLeNet"]);
+      result.push(["caffe","alexnet","Frequently-used: AlexNet"]);
+      result.push(["caffe","yolo_net","Frequently-used: YOLONet"]);
+      result.push(["keras","textGeneration","Frequently-used: Text Generation"]);
       this.setState({searchResult:result});
     }
     else{
+      word = word.toLowerCase();
+
       var allRecognition = this.state.Recognition.models;
       for(var i=0; i<allRecognition.length; i++){
-        if(allRecognition[i][2].indexOf(word)!=-1){
+        if(allRecognition[i][2].toLowerCase().indexOf(word)!=-1){
           result.push(allRecognition[i]);
         }
       }
 
       var allDetection = this.state.Detection.models;
       for(i=0; i<allDetection.length; i++){
-        if(allDetection[i][2].indexOf(word)!=-1){
+        if(allDetection[i][2].toLowerCase().indexOf(word)!=-1){
           result.push(allDetection[i]);
         }
       }
 
       var allSeq2Seq = this.state.Seq2Seq.models;
       for(i=0; i<allSeq2Seq.length; i++){
-        if(allSeq2Seq[i][2].indexOf(word)!=-1){
+        if(allSeq2Seq[i][2].toLowerCase().indexOf(word)!=-1){
           result.push(allSeq2Seq[i]);
         }
       }
 
       var allVQA = this.state.VQA.models;
       for(i=0; i<allVQA.length; i++){
-       if(allVQA[i][2].indexOf(word)!=-1){
+       if(allVQA[i][2].toLowerCase().indexOf(word)!=-1){
          result.push(allVQA[i]);
        }
       }
 
       var allSegmentation = this.state.Segmentation.models;
       for(i=0; i<allSegmentation.length; i++){
-       if(allSegmentation[i][2].indexOf(word)!=-1){
+       if(allSegmentation[i][2].toLowerCase().indexOf(word)!=-1){
          result.push(allSegmentation[i]);
         }
       }
 
       var allRetrieval = this.state.Retrieval.models;
       for(i=0; i<allRetrieval.length; i++){
-        if(allRetrieval[i][2].indexOf(word)!=-1){
+        if(allRetrieval[i][2].toLowerCase().indexOf(word)!=-1){
           result.push(allRetrieval[i]);
         }
       }
 
       var allCaption = this.state.Caption.models;
       for(i=0; i<allCaption.length; i++){
-        if(allCaption[i][2].indexOf(word)!=-1){
+        if(allCaption[i][2].toLowerCase().indexOf(word)!=-1){
           result.push(allCaption[i]);
         }
       }
@@ -247,13 +259,9 @@ class ModelZoo extends React.Component {
         <div className="centered-zoo-modal">
           <div className="zoo-modal-model">
             <h2 className="zoo-modal-text">Load From Zoo</h2>
-            <input className="import-textbox-input" ref='searchBar' onChange={this.handleSearch.bind(this)} type="text" placeholder="Search..." />
+            <input className="zoo-textbox-input" ref='searchBar' onChange={this.handleSearch.bind(this)} type="text" placeholder="Search..." />
             <h4 className="zoo-modal-text">Search Result</h4>
             {renderSearch}
-          </div>
-          <div className="zoo-modal-model">
-            <h3 className="zoo-modal-text">Recognition</h3>
-            {renderRecognition}
           </div>
           <div className="zoo-modal-model">
             <h3 className="zoo-modal-text">Recognition</h3>
