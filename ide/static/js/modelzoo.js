@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import ModelElement from './modelElement';
 
 class ModelZoo extends React.Component {
@@ -52,9 +53,9 @@ class ModelZoo extends React.Component {
         VQA    :{
                   toDisplay:3,
                   models:[
-                            ["keras","VQA","VQA"],
-                            ["keras","VQA2","VQA2"],
-                            ["caffe","mlpVQA","VQS"]
+                            ["keras", "VQA", "VQA"],
+                            ["keras", "VQA2", "VQA2"],
+                            ["caffe", "mlpVQA", "VQS"]
                           ]
                 },
         Segmentation:{
@@ -69,6 +70,7 @@ class ModelZoo extends React.Component {
   }
 
 
+
   handleClick(event){
     if(this.state.open){
       this.setState({text:"Load More"});
@@ -78,6 +80,53 @@ class ModelZoo extends React.Component {
     }
     if (event.target.id =="change")
       this.setState({open:1-this.state.open});
+  }
+
+  handlerSearch(){
+    var bar = ReactDOM.findDOMNode(this.refs.searchBar);
+    var word = bar.value;
+    var result = [];
+
+    var allRecognition = this.state.Recognition.models;
+    for(var i=0; i<allRecognition.length; i++){
+      if(allRecognition[i][2].indexOf(word)!=-1){
+        result.push(allRecognition[i]);
+      }
+    }
+
+    var allDetection = this.state.Detection.models;
+    for(i=0; i<allDetection.length; i++){
+      if(allDetection[i][2].indexOf(word)!=-1){
+        result.push(allDetection[i]);
+      }
+    }
+
+    var allSeq2Seq = this.state.Seq2Seq.models;
+    for(i=0; i<allSeq2Seq.length; i++){
+      if(allSeq2Seq[i][2].indexOf(word)!=-1){
+        result.push(allSeq2Seq[i]);
+      }
+    }
+
+    var allVQA = this.state.VQA.models;
+    for(i=0; i<allVQA.length; i++){
+      if(allVQA[i][2].indexOf(word)!=-1){
+        result.push(allVQA[i]);
+      }
+    }
+
+    var Segmentation = this.state.Segmentation.models;
+    for(i=0; i<allSegmentation.length; i++){
+      if(allSegmentation[i][2].indexOf(word)!=-1){
+        result.push(allSegmentation[i]);
+      }
+    }
+
+
+    window.alert(result);
+
+
+
   }
 
   render() {
@@ -152,6 +201,10 @@ class ModelZoo extends React.Component {
     return (
       <div className="zoo-modal">
         <div className="centered-zoo-modal">
+          <div className="zoo-modal-model">
+            <h2 className="zoo-modal-text">Load From Zoo</h2>
+            <input className="import-textbox-input" ref='searchBar' onChange={this.handlerSearch.bind(this)} type="text" placeholder="Search..." />
+          </div>
           <div className="zoo-modal-model">
             <h3 className="zoo-modal-text">Recognition</h3>
             {renderRecognition}
