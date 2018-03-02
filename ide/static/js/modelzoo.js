@@ -9,6 +9,7 @@ class ModelZoo extends React.Component {
       this.state = {
         open:0,
         text:"Load More",
+        searchresult:[],
         Recognition:{ 
                       toDisplay:6,
                       models:[
@@ -82,11 +83,12 @@ class ModelZoo extends React.Component {
       this.setState({open:1-this.state.open});
   }
 
+
   handlerSearch(){
     var bar = ReactDOM.findDOMNode(this.refs.searchBar);
     var word = bar.value;
     var result = [];
-
+    
     var allRecognition = this.state.Recognition.models;
     for(var i=0; i<allRecognition.length; i++){
       if(allRecognition[i][2].indexOf(word)!=-1){
@@ -115,18 +117,14 @@ class ModelZoo extends React.Component {
       }
     }
 
-    var Segmentation = this.state.Segmentation.models;
+    var allSegmentation = this.state.Segmentation.models;
     for(i=0; i<allSegmentation.length; i++){
       if(allSegmentation[i][2].indexOf(word)!=-1){
         result.push(allSegmentation[i]);
       }
     }
 
-
-    window.alert(result);
-
-
-
+    this.setState({searchresult:result});
   }
 
   render() {
