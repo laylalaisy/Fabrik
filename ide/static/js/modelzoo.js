@@ -9,7 +9,7 @@ class ModelZoo extends React.Component {
       this.state = {
         open:0,
         text:"Load More",
-        searchResult:[],
+        searchResult:[["keras","v3","Inception V3"]],
         Recognition:{ 
                       toDisplay:6,
                       models:[
@@ -102,59 +102,63 @@ class ModelZoo extends React.Component {
     var bar = ReactDOM.findDOMNode(this.refs.searchBar);
     var word = bar.value;
     var result = [];
+
+    if(word ==""){
+      result.push(["caffe","CoCo_Caption","CoCo Caption"]);
+      this.setState({searchResult:result});
+    }
+    else{
+      var allRecognition = this.state.Recognition.models;
+      for(var i=0; i<allRecognition.length; i++){
+        if(allRecognition[i][2].indexOf(word)!=-1){
+          result.push(allRecognition[i]);
+        }
+      }
+
+      var allDetection = this.state.Detection.models;
+      for(i=0; i<allDetection.length; i++){
+        if(allDetection[i][2].indexOf(word)!=-1){
+          result.push(allDetection[i]);
+        }
+      }
+
+      var allSeq2Seq = this.state.Seq2Seq.models;
+      for(i=0; i<allSeq2Seq.length; i++){
+        if(allSeq2Seq[i][2].indexOf(word)!=-1){
+          result.push(allSeq2Seq[i]);
+        }
+      }
+
+      var allVQA = this.state.VQA.models;
+      for(i=0; i<allVQA.length; i++){
+       if(allVQA[i][2].indexOf(word)!=-1){
+         result.push(allVQA[i]);
+       }
+      }
+
+      var allSegmentation = this.state.Segmentation.models;
+      for(i=0; i<allSegmentation.length; i++){
+       if(allSegmentation[i][2].indexOf(word)!=-1){
+         result.push(allSegmentation[i]);
+        }
+      }
+
+      var allRetrieval = this.state.Retrieval.models;
+      for(i=0; i<allRetrieval.length; i++){
+        if(allRetrieval[i][2].indexOf(word)!=-1){
+          result.push(allRetrieval[i]);
+        }
+      }
+
+      var allCaption = this.state.Caption.models;
+      for(i=0; i<allCaption.length; i++){
+        if(allCaption[i][2].indexOf(word)!=-1){
+          result.push(allCaption[i]);
+        }
+      }
+    }
     
-    var allRecognition = this.state.Recognition.models;
-    for(var i=0; i<allRecognition.length; i++){
-      if(allRecognition[i][2].indexOf(word)!=-1){
-        result.push(allRecognition[i]);
-      }
-    }
-
-    var allDetection = this.state.Detection.models;
-    for(i=0; i<allDetection.length; i++){
-      if(allDetection[i][2].indexOf(word)!=-1){
-        result.push(allDetection[i]);
-      }
-    }
-
-    var allSeq2Seq = this.state.Seq2Seq.models;
-    for(i=0; i<allSeq2Seq.length; i++){
-      if(allSeq2Seq[i][2].indexOf(word)!=-1){
-        result.push(allSeq2Seq[i]);
-      }
-    }
-
-    var allVQA = this.state.VQA.models;
-    for(i=0; i<allVQA.length; i++){
-      if(allVQA[i][2].indexOf(word)!=-1){
-        result.push(allVQA[i]);
-      }
-    }
-
-    var allSegmentation = this.state.Segmentation.models;
-    for(i=0; i<allSegmentation.length; i++){
-      if(allSegmentation[i][2].indexOf(word)!=-1){
-        result.push(allSegmentation[i]);
-      }
-    }
-
-    var allRetrieval = this.state.Retrieval.models;
-    for(i=0; i<allRetrieval.length; i++){
-      if(allRetrieval[i][2].indexOf(word)!=-1){
-        result.push(allRetrieval[i]);
-      }
-    }
-
-    var allCaption = this.state.Caption.models;
-    for(i=0; i<allCaption.length; i++){
-      if(allCaption[i][2].indexOf(word)!=-1){
-        result.push(allCaption[i]);
-      }
-    }
-
-
     this.setState({searchResult:result});
-
   }
 
   render() {
@@ -174,7 +178,6 @@ class ModelZoo extends React.Component {
         </div>
         );
     });
-
 
     category = this.state.Detection;
     finalIndex = category.toDisplay*(1 - this.state.open)+this.state.open*category.models.length;
@@ -235,7 +238,13 @@ class ModelZoo extends React.Component {
           <div className="zoo-modal-model">
             <h2 className="zoo-modal-text">Load From Zoo</h2>
             <input className="import-textbox-input" ref='searchBar' onChange={this.handleSearch.bind(this)} type="text" placeholder="Search..." />
-            {this.state.searchResult}
+            <h4 className="zoo-modal-text">Search Result</h4>
+            <ModelElement importNet={this.props.importNet} framework={this.state.searchResult[0][0]} 
+              id={this.state.searchResult[0][1]}>{this.state.searchResult[0][2]}</ModelElement>
+          </div>
+          <div className="zoo-modal-model">
+            <h3 className="zoo-modal-text">Recognition</h3>
+            {renderRecognition}
           </div>
           <div className="zoo-modal-model">
             <h3 className="zoo-modal-text">Recognition</h3>
