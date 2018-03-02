@@ -163,6 +163,16 @@ class ModelZoo extends React.Component {
 
   render() {
     var category = this.state.searchResult;
+    var renderSearch = [];
+    for(var i=0; i<category.length; i++){
+      renderSearch.push(
+        <div>
+          <ModelElement importNet = {this.props.importNet} framework =
+                      {category[i][0]} id = {category[i][1]}> {category[i][2]} </ModelElement>
+          <br/>
+        </div>
+        );
+    }
 
 
     const startIndex = 0;
@@ -239,8 +249,7 @@ class ModelZoo extends React.Component {
             <h2 className="zoo-modal-text">Load From Zoo</h2>
             <input className="import-textbox-input" ref='searchBar' onChange={this.handleSearch.bind(this)} type="text" placeholder="Search..." />
             <h4 className="zoo-modal-text">Search Result</h4>
-            <ModelElement importNet={this.props.importNet} framework={this.state.searchResult[0][0]} 
-              id={this.state.searchResult[0][1]}>{this.state.searchResult[0][2]}</ModelElement>
+            {renderSearch}
           </div>
           <div className="zoo-modal-model">
             <h3 className="zoo-modal-text">Recognition</h3>
