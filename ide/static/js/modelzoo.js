@@ -9,7 +9,7 @@ class ModelZoo extends React.Component {
       this.state = {
         open:0,
         text:"Load More",
-        searchresult:[],
+        searchResult:[],
         Recognition:{ 
                       toDisplay:6,
                       models:[
@@ -51,7 +51,7 @@ class ModelZoo extends React.Component {
                           ["caffe","pix2pix","Pix2Pix"]
                         ]
                 },
-        VQA    :{
+        VQA:{
                   toDisplay:3,
                   models:[
                             ["keras", "VQA", "VQA"],
@@ -65,8 +65,22 @@ class ModelZoo extends React.Component {
                               ["caffe","fcn2","Semantic Segmentation"],
                               ["keras","ZF_UNET_224","UNET"]
                             ]
-                }
+                },
+      Retrieval:{
+                    toDisplay:1,
+                    models:[
+                              ["caffe","siamese_mnist","MNIST Siamese"]
+                           ]
+
+              },
+      Caption:{
+                    toDisplay:1,
+                    models:[
+                            ["caffe","CoCo_Caption","CoCo Caption"]
+                          ]
+              }
       };
+
       this.handleClick = this.handleClick.bind(this);
   }
 
@@ -84,7 +98,7 @@ class ModelZoo extends React.Component {
   }
 
 
-  handlerSearch(){
+  handleSearch(){
     var bar = ReactDOM.findDOMNode(this.refs.searchBar);
     var word = bar.value;
     var result = [];
@@ -124,12 +138,31 @@ class ModelZoo extends React.Component {
       }
     }
 
-    this.setState({searchresult:result});
+    var allRetrieval = this.state.Retrieval.models;
+    for(i=0; i<allRetrieval.length; i++){
+      if(allRetrieval[i][2].indexOf(word)!=-1){
+        result.push(allRetrieval[i]);
+      }
+    }
+
+    var allCaption = this.state.Caption.models;
+    for(i=0; i<allCaption.length; i++){
+      if(allCaption[i][2].indexOf(word)!=-1){
+        result.push(allCaption[i]);
+      }
+    }
+
+
+    this.setState({searchResult:result});
+
   }
 
   render() {
+    var category = this.state.searchResult;
+
+
     const startIndex = 0;
-    var category = this.state.Recognition;
+    category = this.state.Recognition;
     var finalIndex = category.toDisplay*(1 - this.state.open)+this.state.open*category.models.length;
     var sliced = category.models.slice(startIndex, finalIndex);
     const renderRecognition = sliced.map((category) => {
@@ -201,7 +234,8 @@ class ModelZoo extends React.Component {
         <div className="centered-zoo-modal">
           <div className="zoo-modal-model">
             <h2 className="zoo-modal-text">Load From Zoo</h2>
-            <input className="import-textbox-input" ref='searchBar' onChange={this.handlerSearch.bind(this)} type="text" placeholder="Search..." />
+            <input className="import-textbox-input" ref='searchBar' onChange={this.handleSearch.bind(this)} type="text" placeholder="Search..." />
+            {this.state.searchResult}
           </div>
           <div className="zoo-modal-model">
             <h3 className="zoo-modal-text">Recognition</h3>
